@@ -1,0 +1,90 @@
+{% load static %}<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SantéRDV</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+/* ===== Design tokens ===== */
+:root{
+ --c-primary:#6f4297;--c-primary-d:#53307a;--c-primary-l:#efe6f7;
+ --c-success:#2f9e6f;--c-success-d:#23805a;--c-danger:#c0392b;--c-warn:#e0a800;
+ --c-text:#2b2b36;--c-muted:#6b6b7b;--c-bg:#faf8fc;--c-surface:#fff;--c-border:#e8e3ee;
+ --r-sm:8px;--r-md:12px;--r-lg:18px;--r-full:999px;
+ --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:24px;--sp-6:40px;
+ --sh-1:0 2px 10px rgba(40,20,60,.08);--sh-2:0 12px 30px rgba(40,20,60,.16);
+ --font:'Poppins',sans-serif;--font-title:'Playfair Display',serif}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);color:var(--c-text);background:var(--c-bg);line-height:1.55}
+a{color:var(--c-primary);text-decoration:none}
+h1,h2,h3{line-height:1.2}
+/* ===== Navigation ===== */
+.top{background:var(--c-primary);color:#fff;padding:8px 5%;font-size:13px}
+nav{display:flex;align-items:center;flex-wrap:wrap;gap:var(--sp-5);padding:var(--sp-3) 5%;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--c-border);position:sticky;top:0;z-index:20}
+nav a.logo{font-family:var(--font-title);font-size:26px;color:var(--c-primary)!important;margin-right:auto}
+nav a:not(.btn),.link{background:none;border:0;font:500 14px var(--font);cursor:pointer;color:var(--c-text);padding:6px 2px;border-bottom:2px solid transparent}
+nav a:not(.btn):hover,.link:hover{color:var(--c-primary);border-bottom-color:var(--c-primary)}
+/* ===== Boutons ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);background:var(--c-primary);color:#fff!important;padding:11px 22px;border:2px solid transparent;border-radius:var(--r-full);font:600 14px var(--font);cursor:pointer;transition:.18s;text-decoration:none}
+.btn:hover{background:var(--c-primary-d);transform:translateY(-2px);box-shadow:var(--sh-2)}
+.btn:active{transform:none;box-shadow:none}
+.btn:focus-visible{outline:3px solid #b99ad6;outline-offset:2px}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.btn.g{background:var(--c-success)}.btn.g:hover{background:var(--c-success-d)}
+.btn.r{background:var(--c-danger)}.btn.r:hover{background:#9c2b20}
+.btn.o{background:transparent;color:var(--c-primary)!important;border-color:var(--c-primary)}.btn.o:hover{background:var(--c-primary-l);box-shadow:none}
+.btn.w{background:#fff;color:var(--c-primary)!important}.btn.w:hover{background:var(--c-primary-l)}
+.btn.ow{background:transparent;border-color:#fff}.btn.ow:hover{background:#ffffff26;box-shadow:none}
+.btn.s{padding:6px 14px;font-size:12.5px}.btn.l{padding:15px 32px;font-size:16px}
+.actions{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin:var(--sp-4) 0 var(--sp-5)}
+/* ===== Hero (photo en arrière-plan) ===== */
+.hero{position:relative;min-height:600px;display:flex;align-items:center;color:#fff;padding:90px 5% 110px;
+ background:linear-gradient(90deg,rgba(54,28,82,.95) 0%,rgba(79,43,113,.82) 38%,rgba(111,66,151,.12) 78%),url("{% static 'img/medecin.jpg' %}") 72% 18%/cover no-repeat}
+.hero h1{font-family:var(--font-title);font-size:clamp(34px,5vw,58px);margin:var(--sp-4) 0;max-width:640px}
+.hero p{font-size:18px;max-width:520px;opacity:.95}
+.pill{display:inline-block;border:1px solid #fff9;border-radius:var(--r-full);padding:6px 16px;font-size:12.5px;letter-spacing:.06em;background:#ffffff1f}
+.infos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--sp-4);margin:-56px 5% 0;position:relative;z-index:2}
+.infos .card{display:flex;gap:var(--sp-3);align-items:center}
+.infos .ico{font-size:28px}
+/* ===== Mise en page / cartes ===== */
+.wrap{padding:var(--sp-6) 5%}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--sp-5)}
+.card{background:var(--c-surface);border-radius:var(--r-lg);padding:22px;box-shadow:var(--sh-1);border:1px solid var(--c-border)}
+a.card{color:inherit;transition:.18s}a.card:hover{transform:translateY(-4px);box-shadow:var(--sh-2)}
+.step{font:700 20px var(--font-title);width:44px;height:44px;border-radius:50%;background:var(--c-primary-l);color:var(--c-primary);display:grid;place-items:center;margin-bottom:var(--sp-3)}
+.stat{font-size:34px;font-weight:600;color:var(--c-primary)}
+.section-title{font-family:var(--font-title);font-size:32px;margin:0 0 var(--sp-5);color:var(--c-primary-d)}
+.cta{background:linear-gradient(120deg,#4b2a6b,var(--c-primary));color:#fff;border-radius:var(--r-lg);padding:var(--sp-6);text-align:center;margin:0 5% var(--sp-6)}
+.cta h2{font-family:var(--font-title);font-size:32px;margin:0 0 var(--sp-3)}
+.cta .actions{justify-content:center}
+footer{background:#2b1a3d;color:#cbbfd8;padding:var(--sp-5) 5%;font-size:13px;text-align:center}
+/* ===== Badges, tableaux, formulaires ===== */
+.badge{padding:3px 12px;border-radius:var(--r-full);font-size:12px;font-weight:500;background:var(--c-primary-l);color:var(--c-primary)}
+.badge.attente{background:#fff3cd;color:#8a6d00}
+.badge.confirme,.badge.termine{background:#dff5ea;color:var(--c-success-d)}.badge.annule{background:#fde4e1;color:var(--c-danger)}
+table{width:100%;border-collapse:collapse}td,th{padding:12px 10px;text-align:left;border-bottom:1px solid #eee}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--c-muted)}
+tbody tr:hover,tr:hover td{background:#faf5ff}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid #d9d2e2;border-radius:var(--r-sm);font:inherit;background:#fff}
+input:focus,select:focus,textarea:focus{outline:3px solid #d9c6ec;border-color:var(--c-primary)}
+.form{max-width:440px;margin:auto}
+.msg{background:var(--c-primary-l);color:var(--c-primary-d);padding:12px 5%;font-weight:500}
+@media(max-width:700px){nav{gap:var(--sp-3)}.hero{padding:60px 5% 90px}.top{display:none}}
+</style></head><body>
+<div class="top">📅 Réservation en ligne 24h/24 • ✉️ Confirmation par e-mail • 🩺 Tous vos médecins au même endroit</div>
+<nav>
+  <a class="logo" href="{% url 'home' %}">SantéRDV</a>
+  <a href="{% url 'medecins' %}">Médecins</a>
+  {% if user.is_authenticated %}
+    {% if user.role == 'patient' %}<a href="{% url 'mes_rdv' %}">Mes rendez-vous</a>
+    {% elif user.role == 'medecin' %}<a href="{% url 'tableau_medecin' %}">Tableau de bord</a><a href="{% url 'calendrier' %}">Calendrier</a><a href="{% url 'disponibilites' %}">Disponibilités</a><a href="{% url 'conges' %}">Congés</a>
+    {% else %}<a href="{% url 'tableau_admin' %}">Administration</a>{% endif %}
+    <a href="{% url 'profil' %}">Profil</a>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="btn o s">Déconnexion</button></form>
+  {% else %}
+    <a href="{% url 'login' %}">Connexion</a><a class="btn s" href="{% url 'register' %}">S'inscrire</a>
+  {% endif %}
+</nav>
+{% for m in messages %}<div class="msg">{{ m }}</div>{% endfor %}
+{% block content %}{% endblock %}
+<footer>© SantéRDV — projet de gestion de projet (Scrum + UML) • Django + SQLite</footer>
+</body></html>

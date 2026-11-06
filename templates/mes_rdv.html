@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block content %}<div class="wrap"><h2 class="section-title">Mes rendez-vous</h2>
+<div class="actions"><a class="btn g" href="{% url 'medecins' %}">＋ Nouveau rendez-vous</a><a class="btn o" href="{% url 'profil' %}">👤 Mon profil</a></div>
+<form method="get" style="display:flex;gap:10px;margin-bottom:16px;max-width:520px">
+<select name="statut" onchange="this.form.submit()"><option value="">Tous les statuts</option>
+{% for v, l in statuts %}<option value="{{ v }}" {% if v == statut %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
+<a class="btn o" style="white-space:nowrap" href="{% url 'export_excel' %}{% if statut %}?statut={{ statut }}{% endif %}">⬇ Exporter Excel</a></form>
+<div class="card"><table><tr><th>Date</th><th>Heure</th><th>Médecin</th><th>Statut</th><th>Actions</th></tr>
+{% for r in rdvs %}<tr><td>{{ r.date|date:"d/m/Y" }}</td><td>{{ r.heure|time:"H:i" }}</td><td>{{ r.medecin }}</td>
+<td><span class="badge {{ r.statut }}">{{ r.get_statut_display }}</span></td>
+<td style="display:flex;gap:6px">
+{% if r.statut == 'attente' or r.statut == 'confirme' %}
+<a class="btn s" href="{% url 'reporter' r.pk %}">Reporter</a>
+<form method="post" action="{% url 'annuler' r.pk %}">{% csrf_token %}<button class="btn r s">Annuler</button></form>
+{% elif r.statut == 'termine' %}{% if r.avis %}<span style="color:#e0a800">{{ r.avis.get_note_display }}</span>{% else %}<a class="btn g s" href="{% url 'noter' r.pk %}">Noter</a>{% endif %}{% endif %}
+</td></tr>
+{% empty %}<tr><td colspan="5">Aucun rendez-vous.</td></tr>{% endfor %}</table></div></div>{% endblock %}

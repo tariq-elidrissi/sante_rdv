@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% block content %}<div class="wrap"><h2>Administration</h2>
+<div class="grid">
+<div class="card">Patients<div class="stat">{{ stats.patients }}</div></div>
+<div class="card">Médecins<div class="stat">{{ stats.medecins }}</div></div>
+<div class="card">Rendez-vous<div class="stat">{{ stats.rdv }}</div></div>
+<div class="card">En attente<div class="stat">{{ stats.attente }}</div></div></div>
+<div class="actions">
+<a class="btn g" href="{% url 'creer_medecin' %}">＋ Nouveau médecin</a>
+<a class="btn o" href="/admin/rdv/specialite/">🩺 Spécialités</a>
+<a class="btn o" href="/admin/accounts/user/">👥 Utilisateurs</a>
+<a class="btn" href="{% url 'export_excel' %}">⬇ Exporter Excel</a></div>
+<div class="grid" style="margin-bottom:24px">
+<div class="card"><h3>Rendez-vous par mois</h3><canvas id="c1"></canvas></div>
+<div class="card"><h3>Rendez-vous par spécialité</h3><canvas id="c2"></canvas></div></div>
+<div class="grid"><div class="card"><h3>Médecins</h3><table>
+{% for m in medecins %}<tr><td>{{ m }}</td><td>{{ m.specialite }}</td></tr>{% endfor %}</table></div>
+<div class="card"><h3>Derniers rendez-vous</h3><table>
+{% for r in rdvs %}<tr><td>{{ r.date|date:"d/m/Y" }} {{ r.heure|time:"H:i" }}</td><td>{{ r.patient.get_full_name }}</td>
+<td>{{ r.medecin }}</td><td><span class="badge {{ r.statut }}">{{ r.get_statut_display }}</span></td></tr>{% endfor %}</table></div></div>
+</div>
+{{ graph|json_script:"graph" }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.js"></script>
+<script>
+const g = JSON.parse(document.getElementById('graph').textContent);
+new Chart(document.getElementById('c1'), {type:'bar',
+  data:{labels:g.mois, datasets:[{label:'Rendez-vous', data:g.n_mois, backgroundColor:'#6f4297'}]},
+  options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true, ticks:{precision:0}}}}});
+new Chart(document.getElementById('c2'), {type:'doughnut',
+  data:{labels:g.spec, datasets:[{data:g.n_spec, backgroundColor:['#6f4297','#2f9e6f','#e0a800','#c0392b','#3b82f6','#8e6bb5']}]}});
+</script>{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block content %}<div class="wrap"><h2>Mon calendrier</h2>
+<p><span class="badge" style="background:#fff3cd;color:#8a6d00">En attente</span>
+<span class="badge confirme">Confirmé</span> <span class="badge">Terminé</span></p>
+<div class="card"><div id="cal"></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script>
+new FullCalendar.Calendar(document.getElementById('cal'), {
+  initialView: 'timeGridWeek', locale: 'fr', firstDay: 1, allDaySlot: false,
+  slotMinTime: '07:00:00', slotMaxTime: '20:00:00', height: 'auto',
+  headerToolbar: {left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay'},
+  events: "{% url 'evenements' %}"
+}).render();
+</script>{% endblock %}

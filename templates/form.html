@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block content %}
+<div class="wrap"><div class="card form"><h2>{{ titre }}</h2>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn">Valider</button></form>
+{% if lien %}<p><a href="{% url lien.0 %}">{{ lien.1 }}</a></p>{% endif %}
+</div></div>{% endblock %}

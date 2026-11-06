@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}<div class="wrap grid">
+<div class="card"><h3>Ajouter une période d'indisponibilité</h3>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn">Ajouter</button></form></div>
+<div class="card"><h3>Mes congés</h3><table>
+{% for c in conges %}<tr><td>{{ c.debut|date:"d/m/Y" }} → {{ c.fin|date:"d/m/Y" }}</td><td>{{ c.motif }}</td>
+<td><form method="post" action="{% url 'suppr_conge' c.pk %}">{% csrf_token %}<button class="btn r s">Supprimer</button></form></td></tr>
+{% empty %}<tr><td>Aucune période définie.</td></tr>{% endfor %}</table></div></div>{% endblock %}

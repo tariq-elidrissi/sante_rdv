@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}<div class="wrap grid">
+<div class="card"><h3>Ajouter une disponibilité</h3>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn">Ajouter</button></form></div>
+<div class="card"><h3>Mes horaires</h3><table>
+{% for d in dispos %}<tr><td>{{ d.get_jour_display }}</td><td>{{ d.debut|time:"H:i" }} – {{ d.fin|time:"H:i" }}</td>
+<td><form method="post" action="{% url 'suppr_dispo' d.pk %}">{% csrf_token %}<button class="btn r s">Supprimer</button></form></td></tr>
+{% empty %}<tr><td>Aucun horaire défini.</td></tr>{% endfor %}</table></div></div>{% endblock %}

@@ -1,0 +1,62 @@
+digraph G {
+  graph [rankdir=TB, nodesep=1.1, ranksep=0.9, bgcolor="white", fontname="Helvetica", pad=0.4, splines=true];
+  node  [shape=plaintext, fontname="Helvetica", fontsize=12];
+  edge  [fontname="Helvetica", fontsize=11, color="#4b2a6b", fontcolor="#333333"];
+
+  User [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#6f4297">
+    <TR><TD BGCOLOR="#6f4297"><FONT COLOR="white"><B>User</B></FONT><BR/><FONT COLOR="#efe6f7" POINT-SIZE="10">(hérite de AbstractUser)</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T" BGCOLOR="#faf8fc">- id : int<BR ALIGN="LEFT"/>- username : str<BR ALIGN="LEFT"/>- first_name : str<BR ALIGN="LEFT"/>- last_name : str<BR ALIGN="LEFT"/>- email : str<BR ALIGN="LEFT"/>- telephone : str<BR ALIGN="LEFT"/>- role : Role<BR ALIGN="LEFT"/>- password : str (haché)<BR ALIGN="LEFT"/></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T" BGCOLOR="white">+ get_full_name() : str<BR ALIGN="LEFT"/>+ save() : void<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+
+  Specialite [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#6f4297">
+    <TR><TD BGCOLOR="#6f4297"><FONT COLOR="white"><B>Specialite</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T" BGCOLOR="#faf8fc">- id : int<BR ALIGN="LEFT"/>- nom : str (unique)<BR ALIGN="LEFT"/></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T">&nbsp;</TD></TR></TABLE>>];
+
+  Medecin [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#6f4297">
+    <TR><TD BGCOLOR="#6f4297"><FONT COLOR="white"><B>Medecin</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T" BGCOLOR="#faf8fc">- id : int<BR ALIGN="LEFT"/>- bio : text<BR ALIGN="LEFT"/>- tarif : decimal<BR ALIGN="LEFT"/></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T">+ moyenne() : float<BR ALIGN="LEFT"/>+ nb_avis() : int<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+
+  RendezVous [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#6f4297">
+    <TR><TD BGCOLOR="#2f9e6f"><FONT COLOR="white"><B>RendezVous</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T" BGCOLOR="#faf8fc">- id : int<BR ALIGN="LEFT"/>- date : date<BR ALIGN="LEFT"/>- heure : time<BR ALIGN="LEFT"/>- motif : str<BR ALIGN="LEFT"/>- notes : text<BR ALIGN="LEFT"/>- statut : Statut<BR ALIGN="LEFT"/>- cree_le : datetime<BR ALIGN="LEFT"/></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T">&nbsp;</TD></TR></TABLE>>];
+
+  Disponibilite [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#6f4297">
+    <TR><TD BGCOLOR="#6f4297"><FONT COLOR="white"><B>Disponibilite</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T" BGCOLOR="#faf8fc">- id : int<BR ALIGN="LEFT"/>- jour : int (0=lundi … 6=dimanche)<BR ALIGN="LEFT"/>- debut : time<BR ALIGN="LEFT"/>- fin : time<BR ALIGN="LEFT"/></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T">&nbsp;</TD></TR></TABLE>>];
+
+  Indisponibilite [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#6f4297">
+    <TR><TD BGCOLOR="#6f4297"><FONT COLOR="white"><B>Indisponibilite</B></FONT><BR/><FONT COLOR="#efe6f7" POINT-SIZE="10">(congés)</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T" BGCOLOR="#faf8fc">- id : int<BR ALIGN="LEFT"/>- debut : date<BR ALIGN="LEFT"/>- fin : date<BR ALIGN="LEFT"/>- motif : str<BR ALIGN="LEFT"/></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T">&nbsp;</TD></TR></TABLE>>];
+
+  Avis [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#6f4297">
+    <TR><TD BGCOLOR="#e0a800"><FONT COLOR="white"><B>Avis</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T" BGCOLOR="#faf8fc">- id : int<BR ALIGN="LEFT"/>- note : int (1 à 5)<BR ALIGN="LEFT"/>- commentaire : text<BR ALIGN="LEFT"/>- cree_le : datetime<BR ALIGN="LEFT"/></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T">&nbsp;</TD></TR></TABLE>>];
+
+  Role [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#888888">
+    <TR><TD BGCOLOR="#eeeeee"><I>«enumeration»</I><BR/><B>Role</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T">patient<BR ALIGN="LEFT"/>medecin<BR ALIGN="LEFT"/>admin<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+
+  Statut [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" COLOR="#888888">
+    <TR><TD BGCOLOR="#eeeeee"><I>«enumeration»</I><BR/><B>Statut</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BORDER="1" SIDES="T">attente<BR ALIGN="LEFT"/>confirme<BR ALIGN="LEFT"/>annule<BR ALIGN="LEFT"/>termine<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+
+  {rank=same; Role; User; Specialite}
+  {rank=same; Medecin; RendezVous; Statut}
+  {rank=same; Disponibilite; Indisponibilite; Avis}
+
+  User -> Role [style=dashed, arrowhead=vee, label=" typé par"];
+  Specialite -> Medecin [arrowhead=none, taillabel="1", headlabel="0..*", labeldistance=2.2, label="  exerce"];
+  User -> Medecin [arrowhead=none, taillabel="1", headlabel="0..1", labeldistance=2.2, label="  est (médecin)"];
+  User -> RendezVous [arrowhead=none, taillabel="1", headlabel="0..*", labeldistance=2.2, label="  prend (patient)"];
+  Medecin -> RendezVous [arrowhead=none, taillabel="1", headlabel="0..*", labeldistance=2.2, label="reçoit"];
+  RendezVous -> Statut [style=dashed, arrowhead=vee, label=" typé par"];
+  Medecin -> Disponibilite [dir=both, arrowtail=diamond, arrowhead=none, taillabel="1", headlabel="0..*", labeldistance=2.2, label="  définit"];
+  Medecin -> Indisponibilite [dir=both, arrowtail=diamond, arrowhead=none, taillabel="1", headlabel="0..*", labeldistance=2.2, label="  pose"];
+  RendezVous -> Avis [arrowhead=none, taillabel="1", headlabel="0..1", labeldistance=2.2, label="  reçoit après consultation"];
+}

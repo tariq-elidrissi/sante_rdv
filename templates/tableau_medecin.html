@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block content %}<div class="wrap"><h2>Mon tableau de bord</h2>
+<div class="grid"><div class="card">En attente<div class="stat">{{ stats.attente }}</div></div>
+<div class="card">Aujourd'hui<div class="stat">{{ stats.aujourdhui }}</div></div>
+<div class="card">Total<div class="stat">{{ stats.total }}</div></div>
+<div class="card">Note moyenne<div class="stat">{% if stats.note %}★ {{ stats.note }}{% else %}–{% endif %}</div></div></div>
+<div class="actions">
+<a class="btn" href="{% url 'disponibilites' %}">🕘 Disponibilités</a>
+<a class="btn o" href="{% url 'conges' %}">🌴 Congés</a>
+<a class="btn o" href="{% url 'calendrier' %}">📆 Calendrier</a>
+<a class="btn g" href="{% url 'export_excel' %}">⬇ Exporter Excel</a></div>
+<div class="card" style="margin-top:24px"><table>
+<tr><th>Date</th><th>Heure</th><th>Patient</th><th>Motif</th><th>Statut</th><th>Actions</th></tr>
+{% for r in rdvs %}<tr><td>{{ r.date|date:"d/m/Y" }}</td><td>{{ r.heure|time:"H:i" }}</td>
+<td>{{ r.patient.get_full_name }}<br><small>{{ r.patient.telephone }}</small></td><td>{{ r.motif }}</td>
+<td><span class="badge {{ r.statut }}">{{ r.get_statut_display }}</span></td>
+<td><form method="post" style="display:flex;gap:6px">{% csrf_token %}
+<input name="notes" placeholder="Notes" value="{{ r.notes }}">
+{% if r.statut == 'attente' %}<button class="btn g s" formaction="{% url 'changer_statut' r.pk 'confirmer' %}">Confirmer</button>
+<button class="btn r s" formaction="{% url 'changer_statut' r.pk 'refuser' %}">Refuser</button>
+{% elif r.statut == 'confirme' %}<button class="btn s" formaction="{% url 'changer_statut' r.pk 'terminer' %}">Terminer</button>{% endif %}
+</form></td></tr>{% empty %}<tr><td colspan="6">Aucun rendez-vous.</td></tr>{% endfor %}
+</table></div></div>{% endblock %}

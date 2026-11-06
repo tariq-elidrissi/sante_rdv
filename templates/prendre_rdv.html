@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}<div class="wrap">
+<div class="card form" style="max-width:620px">
+<h2>{% if rdv %}Reporter le rendez-vous{% else %}{{ medecin }} — {{ medecin.specialite }}{% endif %}</h2>
+{% if rdv %}<p>Actuellement : <b>{{ rdv.date|date:"d/m/Y" }} à {{ rdv.heure|time:"H:i" }}</b> avec {{ medecin }}</p>{% endif %}
+<form method="get"><input type="date" name="date" value="{{ jour|date:'Y-m-d' }}" min="{{ today|date:'Y-m-d' }}" onchange="this.form.submit()"></form>
+{% if creneaux %}<form method="post">{% csrf_token %}<p>
+{% for c in creneaux %}<label class="badge"><input type="radio" name="heure" value="{{ c|time:'H:i' }}" required style="width:auto"> {{ c|time:"H:i" }}</label> {% endfor %}</p>
+{% if not rdv %}<p><input name="motif" placeholder="Motif de la consultation"></p>{% endif %}
+<button class="btn g">{% if rdv %}Confirmer le report{% else %}Confirmer la demande{% endif %}</button></form>
+{% else %}<p>Aucun créneau libre ce jour.</p>{% endif %}</div></div>{% endblock %}

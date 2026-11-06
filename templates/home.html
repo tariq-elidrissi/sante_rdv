@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero"><div>
+<span class="pill">● NOUVEAUX PATIENTS ACCEPTÉS</span>
+<h1>Des soins de confiance pour toute la famille</h1>
+<p>Trouvez votre médecin et réservez votre consultation en quelques clics, sans appel ni attente.</p>
+<div class="actions">
+  <a class="btn g l" href="{% url 'medecins' %}">📅 Prendre rendez-vous</a>
+  {% if user.is_authenticated %}<a class="btn ow l" href="{% url 'redirection' %}">Mon espace</a>
+  {% else %}<a class="btn ow l" href="{% url 'login' %}">Se connecter</a>{% endif %}
+</div></div></section>
+
+<div class="infos">
+ <div class="card"><span class="ico">⭐</span><div><b>Avis vérifiés</b><br><small>Notes après chaque consultation</small></div></div>
+ <div class="card"><span class="ico">⚡</span><div><b>Réservation rapide</b><br><small>Créneaux libres en temps réel</small></div></div>
+ <div class="card"><span class="ico">✉️</span><div><b>Notifications</b><br><small>E-mail à chaque changement</small></div></div>
+</div>
+
+<div class="wrap"><h2 class="section-title">Comment ça marche ?</h2>
+<div class="grid">
+ <div class="card"><div class="step">1</div><h3>Choisissez un médecin</h3><p>Filtrez par spécialité ou par nom.</p><a class="btn o s" href="{% url 'medecins' %}">Voir les médecins</a></div>
+ <div class="card"><div class="step">2</div><h3>Sélectionnez un créneau</h3><p>Seuls les horaires libres sont proposés.</p><a class="btn o s" href="{% url 'register' %}">Créer un compte</a></div>
+ <div class="card"><div class="step">3</div><h3>Recevez la confirmation</h3><p>Le médecin valide, vous êtes prévenu.</p><a class="btn o s" href="{% url 'login' %}">Se connecter</a></div>
+</div>
+
+<h2 class="section-title" style="margin-top:48px">Nos spécialités</h2>
+<div class="grid">
+{% for s in specialites %}<a class="card" href="{% url 'medecins' %}?specialite={{ s.id }}"><b>🩺 {{ s.nom }}</b><br><small style="color:var(--c-muted)">Voir les médecins →</small></a>
+{% empty %}<p>Aucune spécialité pour le moment.</p>{% endfor %}
+</div></div>
+
+<section class="cta"><h2>Prêt à prendre rendez-vous ?</h2><p>Inscription gratuite, en moins d'une minute.</p>
+<div class="actions"><a class="btn w l" href="{% url 'register' %}">Créer mon compte</a><a class="btn ow l" href="{% url 'medecins' %}">Trouver un médecin</a></div></section>
+{% endblock %}

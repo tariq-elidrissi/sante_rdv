@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}<div class="wrap">
+<form method="get" class="grid" style="margin-bottom:24px">
+<input name="q" placeholder="Nom du médecin" value="{{ request.GET.q }}">
+<select name="specialite"><option value="">Toutes les spécialités</option>
+{% for s in specialites %}<option value="{{ s.id }}">{{ s.nom }}</option>{% endfor %}</select>
+<button class="btn">Rechercher</button></form>
+<div class="grid">{% for m in medecins %}
+<div class="card"><h3>{{ m }}</h3><span class="badge">{{ m.specialite }}</span>
+{% if m.moyenne %}<p style="color:#e0a800">★ <b>{{ m.moyenne }}</b> <small style="color:#777">({{ m.nb_avis }} avis)</small></p>{% endif %}
+<p>{{ m.bio|truncatechars:90 }}</p><p><b>{{ m.tarif }} DH</b></p>
+<a class="btn" href="{% url 'prendre_rdv' m.pk %}">Réserver</a></div>
+{% empty %}<p>Aucun médecin trouvé.</p>{% endfor %}</div></div>{% endblock %}
